@@ -19,6 +19,27 @@ class Gen:
 
         # group = 'RBA'
         # ret = lib_UsbPio.UsbPio.osc_pio(pio, channel, ps, group, state)
+        if state == 1:
+            st = 'ON'
+        else:
+            st = 'OFF'
+        
+        p = Path('/home/ilya/usb-relay-hid/bin-linux-x64/hidusb-relay-cmd')
+        # ret = subprocess.run([p, st, str(ps)], stdout=subprocess.PIPE).stdout.decode()
+        password = '1q2w3e4r5t'
+        cmd = f'echo {password} | sudo -S {p} id=HURTM {st} {str(ps)}'
+        print(cmd)
+        p = Path('usbrelay')
+        # ret = subprocess.run([p, st, str(ps)], stdout=subprocess.PIPE).stdout.decode()
+        password = '1q2w3e4r5t'
+        cmd = f'echo {password} | sudo -S {p} HURTM_{str(ps)}={state}'
+        print(cmd)
+        for i in range(1,11):
+            with subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as process:
+                stdout, stderr = process.communicate()
+                print(f'i:{i} stdout:<{stdout}>, stderr:<{stderr}>, {process.returncode}')
+                if process.returncode == 0:
+                    break
         return 0
 
     def gui_Power(self, ps, state):

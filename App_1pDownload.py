@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-print('jjj')
-
+print('sudo usermod -a -G plugdev ilya')
+print('sudo usermod -a -G tty ilya')
+print('sudo usermod -a -G dialout ilya')
 import re
 import os
 import sys
